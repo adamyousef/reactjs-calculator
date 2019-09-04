@@ -1,26 +1,58 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Calculator from './components/Calculator';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state={
+      result: "",
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange = (button)=>{
+     if(button === "="){
+       this.retrunResult();
+     }
+     else if(button === "C"){
+       this.reset();
+     }
+     else if(button === "CE"){
+      var val = this.state.result;
+      val = val.slice(0, -1);
+      this.setState({ result :val } );
+     }
+     else{
+      var val = this.state.result + button;
+      this.setState({ result :val } );
+  }
+} 
+  retrunResult(){
+    try {
+      var val = eval(this.state.result);
+      this.setState({ result :val } );
+    }
+    catch(err) {
+      alert("Your Input is incorrect ! Please try again !");
+    }
+  }
+  reset(){
+      var val = "";
+      this.setState({ result :val } );
+  }
+ 
+
+  render(){
+    return (
+      <div className="App">
+       <h1>My React Calculator</h1>
+       <Calculator result = {this.state.result}
+                   onClick={this.handleChange}
+       />
+      </div>
+    );
+  }
+
 }
 
 export default App;
